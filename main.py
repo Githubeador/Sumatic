@@ -1,13 +1,12 @@
 import PySimpleGUI as sg
+from PIL import Image
 
-sg.theme('LightBlue')
+sg.theme('Default')
 
-layout = [
-    [sg.Image("fondo montañas.jpg"],
-    [sg.Text('Hola, mundo!')]
-]
+layout = [[sg.Button("CLICK")], [sg.Image("fondo_montanas.png")]]
 
-window = sg.Window('Mi ventana', layout)
+
+window = sg.Window('Mi ventana', layout, size=(1920,1080))
 
 while True:
     event, values = window.read()
