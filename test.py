@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 
 sg.theme("DarkAmber")
 
-layout = [[sg.Button("PULSA AQUÍ")]]
+layout = [[sg.Text("PULSA AQUÍ")]]
 
 windows = sg.Window("Sumatic", layout, size=(1920,1080))
 
