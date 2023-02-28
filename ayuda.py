@@ -68,7 +68,7 @@ myvar3 = 0
 while myvar3 > 10:
     myvar3 += 1
 
-#importancia
+#importancia! esto lo debe tner un programa si o si para ue funcione
 while True:
     event, values = windows.read()
     if event == sg.WIN_CLOSED:

@@ -1,18 +1,18 @@
 import PySimpleGUI as sg
+from PIL import Image
 
-sg.theme("DarkAmber")
+sg.theme('Default')
 
-layout = [[sg.Text("PULSA AQUÍ")]]
+layout = [[sg.Button("CLICK")], [sg.Image("fondo_montanas.png")]]
 
-windows = sg.Window("Sumatic", layout, size=(1920,1080))
+
+window = sg.Window('Mi ventana', layout, size=(1920,1080))
 
 while True:
-    event, values = windows.read()
+    event, values = window.read()
     if event == sg.WIN_CLOSED:
         break
-    if event == "PULSA AQUÍ":
-        sg.Popup("HOLA")
 
-windows.close()
-#
+window.close()
+
 
