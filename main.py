@@ -1,10 +1,8 @@
 import PySimpleGUI as sg
-from PIL import Image
 
 sg.theme('Default')
 
-layout = [[sg.Button("CLICK")], [sg.Image("fondo_montanas.png")]]
-
+layout = [[sg.Button("CLICK")],]
 
 window = sg.Window('Mi ventana', layout, size=(1920,1080))
 
