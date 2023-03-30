@@ -16,6 +16,4 @@ while True:
         break
 
 windows.close()
-
-
-
+#random
