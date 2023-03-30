@@ -1,14 +1,21 @@
 import PySimpleGUI as sg
 
-sg.theme("DarkTeal4")
+sg.theme("DarkAmber")
 
-layout1 = [[sg.Button("atrás"), sg.Button("siguiente")]]
+layout1 = [[sg.Button("PULSA AQUÍ")]]
 
-window1 = sg.Window("SUMATIC", layout1)
+windows = sg.Window("Sumatic", layout, size=(1920,1080))
+
+layout2 =
+
+windows =
 
 while True:
-    event, values = window1.read()
+    event, values = windows.read()
     if event == sg.WIN_CLOSED:
         break
-    elif event == sg.Button#seguir escriviendo <---
-window1.close()
+
+windows.close()
+
+
+
