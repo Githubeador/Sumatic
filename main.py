@@ -20,4 +20,4 @@ while True:
 
 # Cerrar la ventana cuando el bucle principal termina
 window1.close()
-#random
+
