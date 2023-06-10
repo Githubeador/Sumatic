@@ -1,23 +1,104 @@
 import PySimpleGUI as sg
+import random
+import re
 
-# Este script crea una ventana con un botón y la muestra en la pantalla
-sg.theme('Default')
+# Generate a random challenge based on the selected operation
+def generate_challenge(operation):
+    challenge = ""
+    answer = 0
+    if operation == "sum":
+        a = random.randint(1, 10)
+        b = random.randint(1, 10)
+        challenge = f"What is {a} + {b}?"
+        answer = a + b
+    elif operation == "subtract":
+        a = random.randint(1, 10)
+        b = random.randint(1, a)
+        challenge = f"What is {a} - {b}?"
+        answer = a - b
+    elif operation == "multiply":
+        a = random.randint(1, 10)
+        b = random.randint(1, 10)
+        challenge = f"What is {a} x {b}?"
+        answer = a * b
+    return challenge, answer
 
-# Crear el diseño de la ventana
-layout1 = [[sg.Button("CLICK")]]
+def replace_string(string):
+    pattern = r"-([A-Z]+)-"
+    matches = re.findall(pattern, string)
+    for match in matches:
+        replacement = match.lower()
+        string = string.replace(f"-{match}-", replacement)
+    return string
 
-# Crear la ventana
-window1 = sg.Window('Mi ventana', layout1, size = (1920,1080))
+sg.theme("DarkTeal7")
 
-# Bucle principal del programa
+# Start menu layout
+start_menu_layout = [
+    [sg.Button("Start", key="-START-")]
+]
+
+# Select operation layout
+operation_layout = [
+    [sg.Button("Sum", key="-SUM-", button_color=("white", "green"))],
+    [sg.Button("Subtract", key="-SUBTRACT-", button_color=("white", "red"))],
+    [sg.Button("Multiply", key="-MULTIPLY-", button_color=("white", "blue"))],
+    [sg.Button("Exit")]
+]
+
+# Challenge layout
+challenge_layout = [
+    [sg.Text("Challenge:", font=("Helvetica", 14), key="-CHALLENGE-")],
+    [sg.InputText(key="-RESPONSE-")],
+    [sg.Button("Submit")]
+]
+
+# Create the window
+window = sg.Window("Math Challenge App", start_menu_layout)
+
+# Event loop to process events and interact with the GUI
 while True:
-    # Leer los eventos de la ventana
-    event, values = window1.read()
-
-    # Si se produce el evento de cerrar la ventana, salir del bucle
-    if event == sg.WIN_CLOSED:
+    event, values = window.read()
+    if event == sg.WINDOW_CLOSED or event == "Exit":
         break
+    elif event == "-START-":
+        window.hide()
+        start_window = sg.Window("Math Challenge App", operation_layout, finalize=True)
+        start_window_event, start_window_values = start_window.read()
+        if start_window_event == sg.WINDOW_CLOSED or start_window_event == "Exit":
+            start_window.close()
+            window.un_hide()
+            continue
+        operation = replace_string(start_window_event)  # Extract the selected operation from the event key
+        challenge, answer = generate_challenge(operation)
+        start_window.close()
+        challenge_window = sg.Window("Math Challenge App", challenge_layout, finalize=True)
+        challenge_window["-CHALLENGE-"].update(challenge)  # Update the challenge label
+        close_challenge_window = False  # Flag to indicate when to close the challenge window
 
-# Cerrar la ventana cuando el bucle principal termina
-window1.close()
+        while True:
+            event, values = challenge_window.read()
+            if event == sg.WINDOW_CLOSED or event == "Exit":
+                close_challenge_window = True
+                break
+            elif event == "Submit":
+                response = values["-RESPONSE-"]
+                if response.isdigit():
+                    response = int(response)
+                    if response == answer:
+                        sg.popup("Correct! Good job!")
+                        challenge, answer = generate_challenge(operation)  # Generate a new challenge
+                        challenge_window["-CHALLENGE-"].update(challenge)  # Update the challenge label with the new challenge
+                    else:
+                        sg.popup("Incorrect. Try again!")
+                else:
+                    sg.popup("Please enter a valid response.")
 
+        challenge_window.close()
+        window.un_hide()  # Show the start menu window again
+
+        if close_challenge_window:
+            break
+
+# Close the window
+window.close()
