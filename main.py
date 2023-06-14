@@ -2,24 +2,23 @@ import PySimpleGUI as sg
 import random
 import re
 
-# Generate a random challenge based on the selected operation
 def generate_challenge(operation):
     challenge = ""
     answer = 0
     if operation == "sum":
         a = random.randint(1, 10)
         b = random.randint(1, 10)
-        challenge = f"What is {a} + {b}?"
+        challenge = f"¿Cuánto es {a} + {b}?"
         answer = a + b
     elif operation == "subtract":
         a = random.randint(1, 10)
         b = random.randint(1, a)
-        challenge = f"What is {a} - {b}?"
+        challenge = f"¿Cuánto es {a} - {b}?"
         answer = a - b
     elif operation == "multiply":
         a = random.randint(1, 10)
         b = random.randint(1, 10)
-        challenge = f"What is {a} x {b}?"
+        challenge = f"¿Cuánto es {a} x {b}?"
         answer = a * b
     return challenge, answer
 
@@ -31,74 +30,71 @@ def replace_string(string):
         string = string.replace(f"-{match}-", replacement)
     return string
 
-sg.theme("DarkTeal7")
+sg.theme("Tan")
 
-# Start menu layout
 start_menu_layout = [
-    [sg.Button("JUGAR", key="-START-", size=(20, 2), pad=(300, 200))]
+    [sg.Button("JUGAR", key="-START-", size=(20, 4), pad=(300, 200))]
 ]
 
-# Select operation layout
 operation_layout = [
-    [sg.Button("Sum", key="-SUM-", button_color=("white", "green"), size=(20, 2), pad=(300, 200))],
-    [sg.Button("Subtract", key="-SUBTRACT-", button_color=("white", "red"), size=(20, 2), pad=(300, 0))],
-    [sg.Button("Multiply", key="-MULTIPLY-", button_color=("white", "blue"), size=(20, 2), pad=(300, 0))],
-    [sg.Button("Exit", size=(20, 2), pad=(300, 200))]
+    [sg.Button("Sumas", key="-SUM-", button_color=("white", "green"), size=(20, 2), pad=((200, 200), (200, 20)))],
+    [sg.Button("Restas", key="-SUBTRACT-", button_color=("white", "red"), size=(20, 2), pad=((200, 200), (0, 20)))],
+    [sg.Button("Multiplicaciones", key="-MULTIPLY-", button_color=("white", "blue"), size=(20, 2), pad=((200, 200), (0, 20)))],
+    [sg.Button("Salir", size=(20, 2), pad=(300, (0, 200)))]
 ]
 
-# Challenge layout
 challenge_layout = [
-    [sg.Text("Challenge:", font=("Helvetica", 14), key="-CHALLENGE-", pad=(0, 200))],
+    [sg.Text("Reto:", font=("Helvetica", 14), key="-CHALLENGE-", pad=(0, 200))],
     [sg.InputText(key="-RESPONSE-", pad=(0, 0))],
-    [sg.Button("Submit", size=(20, 2), pad=(0, 200))]
+    [sg.Button("Enviar", size=(20, 2), pad=(0, 200))]
 ]
 
-# Create the window
-window = sg.Window("Math Challenge App", start_menu_layout, size=(1920, 1080))
+window = sg.Window("Ventana", start_menu_layout, size=(700, 500))
 
-# Event loop to process events and interact with the GUI
 while True:
     event, values = window.read()
-    if event == sg.WINDOW_CLOSED or event == "Exit":
+    if event == sg.WINDOW_CLOSED or event == "Salir":
         break
     elif event == "-START-":
         window.hide()
-        start_window = sg.Window("Math Challenge App", operation_layout, finalize=True, size=(1920, 1080))
+        start_window = sg.Window("Ventana", operation_layout, finalize=True, size=(1920, 1080))
         start_window_event, start_window_values = start_window.read()
-        if start_window_event == sg.WINDOW_CLOSED or start_window_event == "Exit":
+        if start_window_event == sg.WINDOW_CLOSED or start_window_event == "Salir":
             start_window.close()
             window.un_hide()
             continue
-        operation = replace_string(start_window_event)  # Extract the selected operation from the event key
+        operation = replace_string(start_window_event)
         challenge, answer = generate_challenge(operation)
         start_window.close()
-        challenge_window = sg.Window("Math Challenge App", challenge_layout, finalize=True, size=(1920, 1080))
-        challenge_window["-CHALLENGE-"].update(challenge)  # Update the challenge label
-        close_challenge_window = False  # Flag to indicate when to close the challenge window
+        challenge_window = sg.Window("Ventana", challenge_layout, finalize=True, size=(1920, 1080))
+        challenge_window["-CHALLENGE-"].update(challenge)
+        close_challenge_window = False
 
         while True:
             event, values = challenge_window.read()
-            if event == sg.WINDOW_CLOSED or event == "Exit":
+            if event == sg.WINDOW_CLOSED or event == "Salir":
                 close_challenge_window = True
                 break
-            elif event == "Submit":
+            elif event == "Enviar":
                 response = values["-RESPONSE-"]
                 if response.isdigit():
                     response = int(response)
                     if response == answer:
-                        sg.popup("Correct! Good job!")
-                        challenge, answer = generate_challenge(operation)  # Generate a new challenge
-                        challenge_window["-CHALLENGE-"].update(challenge)  # Update the challenge label with the new challenge
+                        sg.popup("¡Correcto! ¡Buen Trabajo!")
+                        challenge, answer = generate_challenge(operation)
+                        challenge_window["-CHALLENGE-"].update(challenge)
                     else:
-                        sg.popup("Incorrect. Try again!")
+                        sg.popup("Incorrecto. ¡Inténtalo de nuevo!")
                 else:
-                    sg.popup("Please enter a valid response.")
+                    sg.popup("Por favor, ingresa una respuesta válida.")
 
         challenge_window.close()
-        window.un_hide()  # Show the start menu window again
+        window.un_hide()
 
         if close_challenge_window:
             break
 
-# Close the window
 window.close()
+
+
+
