@@ -35,26 +35,26 @@ sg.theme("DarkTeal7")
 
 # Start menu layout
 start_menu_layout = [
-    [sg.Button("Start", key="-START-")]
+    [sg.Button("JUGAR", key="-START-", size=(20, 2), pad=(300, 200))]
 ]
 
 # Select operation layout
 operation_layout = [
-    [sg.Button("Sum", key="-SUM-", button_color=("white", "green"))],
-    [sg.Button("Subtract", key="-SUBTRACT-", button_color=("white", "red"))],
-    [sg.Button("Multiply", key="-MULTIPLY-", button_color=("white", "blue"))],
-    [sg.Button("Exit")]
+    [sg.Button("Sum", key="-SUM-", button_color=("white", "green"), size=(20, 2), pad=(300, 200))],
+    [sg.Button("Subtract", key="-SUBTRACT-", button_color=("white", "red"), size=(20, 2), pad=(300, 0))],
+    [sg.Button("Multiply", key="-MULTIPLY-", button_color=("white", "blue"), size=(20, 2), pad=(300, 0))],
+    [sg.Button("Exit", size=(20, 2), pad=(300, 200))]
 ]
 
 # Challenge layout
 challenge_layout = [
-    [sg.Text("Challenge:", font=("Helvetica", 14), key="-CHALLENGE-")],
-    [sg.InputText(key="-RESPONSE-")],
-    [sg.Button("Submit")]
+    [sg.Text("Challenge:", font=("Helvetica", 14), key="-CHALLENGE-", pad=(0, 200))],
+    [sg.InputText(key="-RESPONSE-", pad=(0, 0))],
+    [sg.Button("Submit", size=(20, 2), pad=(0, 200))]
 ]
 
 # Create the window
-window = sg.Window("Math Challenge App", start_menu_layout)
+window = sg.Window("Math Challenge App", start_menu_layout, size=(1920, 1080))
 
 # Event loop to process events and interact with the GUI
 while True:
@@ -63,7 +63,7 @@ while True:
         break
     elif event == "-START-":
         window.hide()
-        start_window = sg.Window("Math Challenge App", operation_layout, finalize=True)
+        start_window = sg.Window("Math Challenge App", operation_layout, finalize=True, size=(1920, 1080))
         start_window_event, start_window_values = start_window.read()
         if start_window_event == sg.WINDOW_CLOSED or start_window_event == "Exit":
             start_window.close()
@@ -72,7 +72,7 @@ while True:
         operation = replace_string(start_window_event)  # Extract the selected operation from the event key
         challenge, answer = generate_challenge(operation)
         start_window.close()
-        challenge_window = sg.Window("Math Challenge App", challenge_layout, finalize=True)
+        challenge_window = sg.Window("Math Challenge App", challenge_layout, finalize=True, size=(1920, 1080))
         challenge_window["-CHALLENGE-"].update(challenge)  # Update the challenge label
         close_challenge_window = False  # Flag to indicate when to close the challenge window
 
