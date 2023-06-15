@@ -6,12 +6,12 @@ def generate_challenge(operation):
     challenge = ""
     answer = 0
     if operation == "sum":
-        a = random.randint(1, 10)
-        b = random.randint(1, 10)
+        a = random.randint(1, 500)
+        b = random.randint(1, 500)
         challenge = f"¿Cuánto es {a} + {b}?"
         answer = a + b
     elif operation == "subtract":
-        a = random.randint(1, 10)
+        a = random.randint(1, 250)
         b = random.randint(1, a)
         challenge = f"¿Cuánto es {a} - {b}?"
         answer = a - b
@@ -40,7 +40,7 @@ operation_layout = [
     [sg.Button("Sumas", key="-SUM-", button_color=("white", "green"), size=(20, 2), pad=((200, 200), (200, 20)))],
     [sg.Button("Restas", key="-SUBTRACT-", button_color=("white", "red"), size=(20, 2), pad=((200, 200), (0, 20)))],
     [sg.Button("Multiplicaciones", key="-MULTIPLY-", button_color=("white", "blue"), size=(20, 2), pad=((200, 200), (0, 20)))],
-    [sg.Button("Salir", size=(20, 2), pad=(300, (0, 200)))]
+    [sg.Button("Salir", size=(20, 2), pad=((300, 200), (0, 200)))]
 ]
 
 challenge_layout = [
@@ -49,7 +49,7 @@ challenge_layout = [
     [sg.Button("Enviar", size=(20, 2), pad=(0, 200))]
 ]
 
-window = sg.Window("Ventana", start_menu_layout, size=(700, 500))
+window = sg.Window("Ventana", start_menu_layout, size=(700, 500), element_justification='c')
 
 while True:
     event, values = window.read()
@@ -57,7 +57,7 @@ while True:
         break
     elif event == "-START-":
         window.hide()
-        start_window = sg.Window("Ventana", operation_layout, finalize=True, size=(1920, 1080))
+        start_window = sg.Window("Ventana", operation_layout, finalize=True, size=(700, 500), element_justification='c')
         start_window_event, start_window_values = start_window.read()
         if start_window_event == sg.WINDOW_CLOSED or start_window_event == "Salir":
             start_window.close()
@@ -66,7 +66,7 @@ while True:
         operation = replace_string(start_window_event)
         challenge, answer = generate_challenge(operation)
         start_window.close()
-        challenge_window = sg.Window("Ventana", challenge_layout, finalize=True, size=(1920, 1080))
+        challenge_window = sg.Window("Ventana", challenge_layout, finalize=True, size=(800, 900), element_justification='c')
         challenge_window["-CHALLENGE-"].update(challenge)
         close_challenge_window = False
 
