@@ -5,7 +5,7 @@ import pygame
 def play_audio(file_path):
     pygame.mixer.init()
     pygame.mixer.music.load(file_path)
-    pygame.mixer.music.play(-1)  # -1 represents infinite loop
+    pygame.mixer.music.play(-1)
 
 def play_audio_player():
     audio_file = 'musica.mp3'
@@ -15,12 +15,12 @@ def generate_challenge(operation):
     challenge = ""
     answer = 0
     if operation == "sum":
-        a = random.randint(1, 500)
-        b = random.randint(1, 500)
+        a = random.randint(1, 200)
+        b = random.randint(1, 200)
         challenge = f"¿Cuánto es {a} + {b}?"
         answer = a + b
     elif operation == "subtract":
-        a = random.randint(1, 250)
+        a = random.randint(1, 100)
         b = random.randint(1, a)
         challenge = f"¿Cuánto es {a} - {b}?"
         answer = a - b
