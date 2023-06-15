@@ -1,6 +1,15 @@
 import PySimpleGUI as sg
-import random
-import re
+import random, threading, re, playsound, os
+import pygame
+
+def play_audio(file_path):
+    pygame.mixer.init()
+    pygame.mixer.music.load(file_path)
+    pygame.mixer.music.play(-1)  # -1 represents infinite loop
+
+def play_audio_player():
+    audio_file = 'musica.mp3'
+    play_audio(audio_file)
 
 def generate_challenge(operation):
     challenge = ""
@@ -51,8 +60,14 @@ challenge_layout = [
 
 window = sg.Window("Ventana", start_menu_layout, size=(700, 500), element_justification='c')
 
+counter = 0
+
 while True:
     event, values = window.read()
+    if counter == 0:
+        play_audio_player()
+        counter = 1
+
     if event == sg.WINDOW_CLOSED or event == "Salir":
         break
     elif event == "-START-":
